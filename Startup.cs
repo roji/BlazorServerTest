@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Data.Common;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using BlazorServerTest.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlazorServerTest
 {
@@ -26,6 +28,13 @@ namespace BlazorServerTest
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<BlogContext>(options =>
+                    options
+                        .UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
+                        .UseSnakeCaseNamingConvention(),
+                contextLifetime: ServiceLifetime.Transient,
+                optionsLifetime: ServiceLifetime.Singleton);
+
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddSingleton<WeatherForecastService>();
