@@ -30,10 +30,15 @@ namespace BlazorServerTest
         {
             services.AddDbContext<BlogContext>(options =>
                     options
-                        .UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
-                        .UseSnakeCaseNamingConvention(),
-                contextLifetime: ServiceLifetime.Transient,
+                        .UseSqlServer(Configuration.GetConnectionString("DefaultConnection")),
+                /*contextLifetime: ServiceLifetime.Transient, */
                 optionsLifetime: ServiceLifetime.Singleton);
+            // services.AddDbContext<BlogContext>(options =>
+            //         options
+            //             .UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
+            //             .UseSnakeCaseNamingConvention(),
+            //     contextLifetime: ServiceLifetime.Transient,
+            //     optionsLifetime: ServiceLifetime.Singleton);
 
             services.AddRazorPages();
             services.AddServerSideBlazor();
